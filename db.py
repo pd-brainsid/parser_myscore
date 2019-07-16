@@ -36,12 +36,37 @@ def create_table():
     Base.metadata.create_all(engine)
 
 
-def add_games(games):
+def convert_to_json(list_records):
+    dict_view = {}
 
+    for record in list_records:
+        obj = {
+            'discipline': record.discipline,
+            'player_1': record.player_1,
+            'player_2': record.player_2,
+            'score_p_1': record.score_p_1,
+            'score_p_2': record.score_p_2,
+            'country': record.country,
+            'league': record.league,
+        }
+        dict_view[record.id] = obj
+    return dict_view
+
+
+def get_games(sport_name):
     Session = sessionmaker(bind=engine)
     Session.configure(bind=engine)
     session = Session()
-    # print()
+    exists_records = [game for game in session.query(Game).filter(Game.discipline == sport_name)]
+    session.commit()
+
+    return convert_to_json(exists_records)
+
+
+def add_games(games):
+    Session = sessionmaker(bind=engine)
+    Session.configure(bind=engine)
+    session = Session()
     exists_records = [game.id for game in session.query(Game).order_by(Game.id)]
     for game_id, games_obj in games.items():
         if game_id in exists_records:
