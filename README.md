@@ -18,4 +18,10 @@ This application has two parts:
 A parser is required to obtain games information and store that information in a database.
 App required to provide information about a particular sport.
 
-for get info about games use GET request on addr "http://<your_addr>/api/games/<sport_name>'"
+To get game information, you need to take these steps:
+1. curl -H "Content-Type: application/json" -X POST -d '{"username":"user","password":"1111"}' http://<addr>/auth - to get a token
+2. curl -X GET http://<addr>/api/v1/games/<sport_name> -H "Authorization: JWT <token token from the last step>"
+
+
+
+
