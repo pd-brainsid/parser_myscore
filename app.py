@@ -9,7 +9,7 @@ logging.basicConfig(filename="log.log", level=logging.INFO)
 @APP.route('/')
 def index():
     return {
-        'INFO': 'Hello you can get info about completed games soccer or hockey for today'
+        'INFO': 'Hello! You can get info about completed soccer or hockey games for today'
     }
 
 
