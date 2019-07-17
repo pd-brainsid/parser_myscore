@@ -2,9 +2,11 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+import logging
 
 Base = declarative_base()
 engine = create_engine('sqlite:///games.sqlite', echo=True)
+logging.basicConfig(filename="log.log", level=logging.INFO)
 
 
 class Game(Base):
@@ -33,7 +35,15 @@ class Game(Base):
 
 
 def create_table():
+    logging.info("table is created")
+
     Base.metadata.create_all(engine)
+
+
+def drop_table():
+    logging.info("table is deleted")
+
+    Base.metadata.drop_all(engine)
 
 
 def convert_to_json(list_records):
@@ -50,6 +60,7 @@ def convert_to_json(list_records):
             'league': record.league,
         }
         dict_view[record.id] = obj
+
     return dict_view
 
 
@@ -64,6 +75,8 @@ def get_games(sport_name):
 
 
 def add_games(games):
+    if games is None:
+        return
     Session = sessionmaker(bind=engine)
     Session.configure(bind=engine)
     session = Session()
@@ -72,4 +85,6 @@ def add_games(games):
         if game_id in exists_records:
             continue
         session.add(games_obj)
+        logging.info(f"{games_obj.id} added to DB")
+
     session.commit()
