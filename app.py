@@ -19,15 +19,15 @@ def get_games(sport_name):
     logging.info(f"request for information about {sport_name}")
     games_info = db.get_games(sport_name)
     if len(games_info) == 0:
-        request = {
+        answer = {
             'INFO': 'There is no information about this game for today'
         }
     else:
-        request = {
+        answer = {
             'INFO': 'There is information about this game for today',
             sport_name: games_info
         }
-    return request
+    return answer
 
 
 if __name__ == '__main__':
