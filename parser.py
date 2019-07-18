@@ -53,7 +53,7 @@ def get_all_leagues(sport_name):
         country = title_box.find_element_by_css_selector('span.event__title--type').text
         league_name = title_box.find_element_by_css_selector('span.event__title--name').text
         item.find_element_by_css_selector('div.event__expander.icon--expander.expand').click()
-        current_league_games = games_list.find_elements_by_class_name('event__match.event__match--oneLine')
+        current_league_games = games_list.find_elements_by_css_selector('[class*="event__match--oneLine"]')
         for game in current_league_games:
             id_ = game.get_attribute('id')
             stage = game.find_element_by_css_selector('div.event__stage').text
